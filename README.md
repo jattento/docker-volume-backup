@@ -16,7 +16,7 @@ Documentation is found at <https://offen.github.io/docker-volume-backup>
   - [Recipes](https://offen.github.io/docker-volume-backup/recipes/)
 
 ---
-
+---
 ## Quickstart
 
 ### Recurring backups in a compose setup
