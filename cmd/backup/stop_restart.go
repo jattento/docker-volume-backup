@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -130,8 +131,16 @@ func (s *script) stopContainersAndServices() (func() error, error) {
 		return noop, errwrap.Wrap(err, "error querying for containers")
 	}
 	containersToStop, err := s.cli.ContainerList(context.Background(), container.ListOptions{All: true})
+
 	if err != nil {
 		return noop, errwrap.Wrap(err, "error querying for containers to stop")
+	}
+
+	for i := 0; i < len(containersToStop); i++ {
+		if strings.Contains(containersToStop[i].Image, "volume-backup") {
+			containersToStop = append(containersToStop[:i], containersToStop[i+1:]...)
+			break
+		}
 	}
 
 	var allServices []swarm.Service
